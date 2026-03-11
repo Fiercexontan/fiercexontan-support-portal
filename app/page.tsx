@@ -79,7 +79,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Live Status Indicator */}
+            {/* Live Status */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -176,7 +176,6 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="glass-card rounded-3xl p-12 text-center relative overflow-hidden"
           >
-            {/* Decorative gradient */}
             <div className="absolute inset-0 bg-gradient-accent opacity-5"></div>
             
             <div className="relative z-10">
