@@ -5,114 +5,58 @@ import { BLOCKCHAIN_ICONS } from '@/lib/constants';
 import { useEffect, useState } from 'react';
 
 export default function FloatingBlockchain() {
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 });
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Set dimensions after component mounts (client-side only)
-    setDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight
-    });
-
-    const handleResize = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    setIsMounted(true);
   }, []);
 
-  // Generate random positions and durations for each icon
-  const generateAnimationProps = (index) => {
-    const baseDelay = index * 2;
-    const baseDuration = 20 + (index * 3);
-    
-    return {
-      initial: {
-        x: Math.random() * dimensions.width,
-        y: Math.random() * dimensions.height,
-        rotate: 0,
-        opacity: 0,
-      },
-      animate: {
-        x: [
-          Math.random() * dimensions.width,
-          Math.random() * dimensions.width,
-          Math.random() * dimensions.width,
-        ],
-        y: [
-          Math.random() * dimensions.height,
-          Math.random() * dimensions.height,
-          Math.random() * dimensions.height,
-        ],
-        rotate: [0, 360, 720],
-        opacity: [0, 0.3, 0],
-      },
-      transition: {
-        duration: baseDuration,
-        repeat: Infinity,
-        delay: baseDelay,
-        ease: 'easeInOut',
-      },
-    };
-  };
+  if (!isMounted) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {BLOCKCHAIN_ICONS.map((icon, index) => (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-30">
+      {BLOCKCHAIN_ICONS.slice(0, 6).map((icon, index) => (
         <motion.div
           key={icon.symbol}
-          className="absolute w-16 h-16 md:w-20 md:h-20"
-          {...generateAnimationProps(index)}
+          className="absolute"
+          initial={{
+            x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
+            y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
+            opacity: 0,
+          }}
+          animate={{
+            x: [
+              Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
+              Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
+              Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1920),
+            ],
+            y: [
+              Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
+              Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
+              Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1080),
+            ],
+            rotate: [0, 180, 360],
+            opacity: [0, 0.4, 0],
+          }}
+          transition={{
+            duration: 25 + index * 3,
+            repeat: Infinity,
+            delay: index * 2,
+            ease: 'easeInOut',
+          }}
         >
-          {/* Simple circular icon with gradient */}
           <div
-            className="w-full h-full rounded-full flex items-center justify-center font-bold text-lg md:text-xl shadow-lg"
+            className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center font-bold text-sm md:text-lg backdrop-blur-sm"
             style={{
-              background: `linear-gradient(135deg, ${icon.color}40, ${icon.color}20)`,
-              border: `2px solid ${icon.color}60`,
+              background: `linear-gradient(135deg, ${icon.color}30, ${icon.color}10)`,
+              border: `2px solid ${icon.color}40`,
               color: icon.color,
+              boxShadow: `0 0 20px ${icon.color}20`,
             }}
           >
             {icon.symbol}
           </div>
         </motion.div>
-      ))}
-
-      {/* Additional decorative floating particles */}
-      {[...Array(15)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className="absolute w-2 h-2 rounded-full"
-          style={{
-            background: i % 2 === 0 ? '#0066FF' : '#00D9B5',
-          }}
-          initial={{
-            x: Math.random() * dimensions.width,
-            y: Math.random() * dimensions.height,
-            opacity: 0,
-          }}
-          animate={{
-            x: [
-              Math.random() * dimensions.width,
-              Math.random() * dimensions.width,
-            ],
-            y: [
-              Math.random() * dimensions.height,
-              Math.random() * dimensions.height,
-            ],
-            opacity: [0, 0.6, 0],
-          }}
-          transition={{
-            duration: 15 + i * 2,
-            repeat: Infinity,
-            delay: i * 0.5,
-            ease: 'easeInOut',
-          }}
-        />
       ))}
     </div>
   );
