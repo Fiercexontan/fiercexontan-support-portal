@@ -20,40 +20,34 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
+          
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
             <div className="w-12 h-12 rounded-xl bg-gradient-accent flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
               <span className="text-2xl font-bold text-white">F</span>
             </div>
-            <div className="hidden md:block">
+            <div className="hidden sm:block">
               <div className="text-xl font-bold gradient-text">Fiercexontan</div>
               <div className="text-xs text-accent-cyan">Support Portal</div>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - CENTERED */}
+          <div className="hidden md:flex items-center space-x-8 flex-1 justify-center">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 href={item.path}
-                className="text-white/80 hover:text-accent-cyan transition-colors duration-300 font-medium"
+                className="text-white/80 hover:text-accent-cyan transition-colors duration-300 font-medium whitespace-nowrap"
               >
                 {item.name}
               </Link>
             ))}
           </div>
 
-          {/* Wallet Connect Button */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Wallet Connect Button - RIGHT SIDE */}
+          <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
             <w3m-button />
-            {isConnected && address && (
-              <div className="px-4 py-2 rounded-lg bg-accent-cyan/10 border border-accent-cyan/30">
-                <span className="text-accent-cyan text-sm font-mono">
-                  {formatAddress(address)}
-                </span>
-              </div>
-            )}
           </div>
 
           {/* Mobile menu button */}
@@ -82,13 +76,6 @@ export default function Navbar() {
             ))}
             <div className="pt-4 border-t border-white/10">
               <w3m-button />
-              {isConnected && address && (
-                <div className="mt-3 px-4 py-2 rounded-lg bg-accent-cyan/10 border border-accent-cyan/30">
-                  <span className="text-accent-cyan text-sm font-mono">
-                    {formatAddress(address)}
-                  </span>
-                </div>
-              )}
             </div>
           </div>
         </div>
